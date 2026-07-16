@@ -2,6 +2,29 @@
 
 A full-featured MikroTik router monitoring web application with multi-router support, live traffic graphs, PPPoE client management, and per-client usage tracking.
 
+## Screenshots
+
+### Login
+![Login](screenshots/Login.png)
+
+### Dashboard
+![Dashboard](screenshots/Dashboard.png)
+
+### PPPoE Users
+![PPPoE Users](screenshots/pppoe.png)
+
+### Interfaces
+![Interfaces](screenshots/Interfaces.png)
+
+### Queue Monitoring
+![Queues](screenshots/queues.png)
+
+### Client Usage
+![Client Usage](screenshots/usage.png)
+
+### Client Usage Detail
+![Usage Detail](screenshots/usage%20detail.png)
+
 ## Features
 
 - **Multi-Router Support** — Monitor multiple MikroTik routers from a single dashboard
