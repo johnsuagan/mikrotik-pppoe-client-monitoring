@@ -1,59 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MikroTik PPPoE Client Monitoring
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A full-featured MikroTik router monitoring web application with multi-router support, live traffic graphs, PPPoE client management, and per-client usage tracking.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Multi-Router Support** — Monitor multiple MikroTik routers from a single dashboard
+- **Live Traffic Graphs** — Real-time bandwidth charts with pulsing beat animation (3s refresh)
+- **PPPoE User Management** — View active PPPoE sessions and disconnect users instantly
+- **Queue Monitoring** — Per-queue bandwidth graphs with individual traffic views
+- **Client Usage Tracking** — Daily/weekly/monthly usage per client with CSV export
+- **Dark Mode** — Full dark theme with localStorage persistence
+- **Responsive UI** — AdminLTE 4 + Bootstrap 5 sidebar layout
+- **Auto-Refresh** — Interfaces page refreshes every 5 seconds
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Component | Technology |
+|-----------|-----------|
+| Backend | Laravel 12, PHP 8.2 |
+| Frontend | AdminLTE 4, Bootstrap 5, jQuery |
+| Charts | Chart.js |
+| Router API | RouterOS API (evilfreelancer/routeros-api-php) |
+| Build | Vite 7 |
 
-## Learning Laravel
+## Requirements
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP 8.2+
+- MySQL/MariaDB
+- XAMPP or similar stack
+- Node.js & npm
+- MikroTik RouterOS with API enabled (port 8728)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/johnsuagan/mikrotik-pppoe-client-monitoring.git
+   cd mikrotik-pppoe-client-monitoring
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-### Premium Partners
+3. **Install JS dependencies & build**
+   ```bash
+   npm install
+   npm run build
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. **Configure environment**
+   ```bash
+   copy .env.example .env
+   php artisan key:generate
+   ```
+   Edit `.env` and set your database credentials and default MikroTik connection:
+   ```
+   MIKROTIK_HOST=192.168.200.1
+   MIKROTIK_PORT=8728
+   MIKROTIK_USER=laravel
+   MIKROTIK_PASS=your_password
+   ```
 
-## Contributing
+5. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. **Add a router** via the web UI at `/routers/create` or use the `.env` defaults.
 
-## Code of Conduct
+7. **Start the usage logger** (logs queue usage every 5 minutes)
+   ```bash
+   php artisan schedule:work
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+8. **Serve the app**
+   ```bash
+   php artisan serve
+   ```
+   Visit http://127.0.0.1:8000
 
-## Security Vulnerabilities
+## Pages
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Route | Description |
+|-------|-------------|
+| `/` | Dashboard — router info, system resources, live total traffic graph |
+| `/pppoe` | Active PPPoE users with disconnect |
+| `/interfaces` | Network interfaces with live rates (auto-refresh 5s) |
+| `/queues` | Simple queues overview with aggregate traffic graph |
+| `/queues/traffic` | Individual bandwidth graph per queue |
+| `/usage` | All clients with live download/upload rates |
+| `/usage/{router}/{client}` | Per-client daily/weekly/monthly usage charts + CSV export |
+| `/routers` | Add, edit, test, and delete routers |
+
+## MikroTik Setup
+
+1. Enable the API service on your MikroTik router:
+   ```
+   /ip service set api disabled=no port=8728
+   ```
+2. Create a monitoring user:
+   ```
+   /user add name=laravel password=your_password group=read
+   ```
+3. Ensure the server can reach the router on port 8728.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT
