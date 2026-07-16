@@ -574,3 +574,25 @@ body:not(.dark-mode) .theme-toggle .icon-sun { display: none; }
 .text-success-custom { color: #059669 !important; }
 .text-danger-custom { color: #dc2626 !important; }
 .text-warning-custom { color: #d97706 !important; }
+
+/* ===== LOGIN PAGE ===== */
+.login-page {
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-box { width: 400px; }
+.login-logo { margin-bottom: 20px; }
+.login-logo a { text-decoration: none; }
+.login-card-body { background: var(--surface) !important; }
+.login-page .card { background: var(--surface) !important; }
+.login-page .input-group-text { background: var(--surface-alt) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+.login-page .form-control { background: var(--surface-alt) !important; border-color: var(--border) !important; color: var(--text) !important; }
+.login-page .form-control::placeholder { color: var(--text-muted) !important; }
+.login-page .form-control:focus { border-color: var(--primary) !important; box-shadow: 0 0 0 2px rgba(80,70,229,0.15) !important; }
+.login-page .form-check-label { color: var(--text-muted) !important; }
+.login-page .input-group-text .fas { color: var(--text-muted) !important; }
+.dark-mode .login-page .card { border-color: rgba(255,255,255,0.08) !important; }

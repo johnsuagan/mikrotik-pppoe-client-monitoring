@@ -57,6 +57,26 @@
                 </div>
             </li>
             @endif
+            @auth
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                    <i class="fas fa-user-circle me-1" style="color: var(--primary);"></i>
+                    {{ Auth::user()->name }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <div class="dropdown-header" style="font-size: 11px; color: var(--text-muted);">
+                        <i class="fas fa-envelope me-1"></i> {{ Auth::user()->email }}
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item" style="color: #ef4444;">
+                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </li>
+            @endauth
         </ul>
     </nav>
 
