@@ -132,7 +132,7 @@
 
     <footer class="main-footer">
         <div class="float-end d-none d-sm-block">v1.0</div>
-        <strong>MikroTik Monitor</strong>
+        <strong>MikroTik Monitor</strong> &copy; {{ date('Y') }} <a href="https://github.com/johnsuagan" target="_blank" style="color: var(--primary); text-decoration: none;">John Suagan</a>
     </footer>
 
 </div>
