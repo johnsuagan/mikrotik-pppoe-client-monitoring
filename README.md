@@ -104,6 +104,45 @@ A full-featured MikroTik router monitoring web application with multi-router sup
    ```
    Visit http://127.0.0.1:8000
 
+## Docker Deployment (Recommended)
+
+The fastest way to deploy — runs app, MySQL, and scheduler in containers.
+
+1. **Clone and configure**
+   ```bash
+   git clone https://github.com/johnsuagan/mikrotik-pppoe-client-monitoring.git
+   cd mikrotik-pppoe-client-monitoring
+   cp .env.docker .env
+   ```
+
+2. **Edit `.env`** — set your MikroTik router IP and credentials
+
+3. **Start everything**
+   ```bash
+   docker compose up -d
+   ```
+
+4. **Visit** http://localhost:8080
+
+That's it. Migrations, admin user, and scheduler all start automatically.
+
+### Docker Commands
+| Command | Description |
+|---------|-------------|
+| `docker compose up -d` | Start all containers |
+| `docker compose down` | Stop all containers |
+| `docker compose logs -f app` | View app logs |
+| `docker compose exec app php artisan tinker` | Laravel tinker |
+| `docker compose exec app php artisan queue:log-usage` | Manual usage log |
+| `docker compose exec mysql mysql -u mikrotik -p mikrotik_monitor` | Access database |
+
+### What's Included
+| Container | Purpose | Port |
+|-----------|---------|------|
+| `mikrotik-monitor` | Laravel app (Apache) | 8080 |
+| `mikrotik-scheduler` | Usage logger (every 5 min) | — |
+| `mikrotik-db` | MySQL 8.0 database | 3307 |
+
 ## Pages
 
 | Route | Description |

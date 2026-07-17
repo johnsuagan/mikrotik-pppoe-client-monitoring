@@ -1,0 +1,16 @@
+node_modules
+vendor
+.git
+.gitignore
+*.md
+screenshots
+.env
+.env.backup
+.env.production
+docker-compose.yml
+docker
+tests
+.idea
+.vscode
+.phpunit.cache
+.phpunit.result.cache

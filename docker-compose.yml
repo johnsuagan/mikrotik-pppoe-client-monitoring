@@ -1,0 +1,78 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mikrotik-monitor
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=http://localhost:8080
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=mikrotik_monitor
+      - DB_USERNAME=mikrotik
+      - DB_PASSWORD=secret_password
+      - MIKROTIK_HOST=${MIKROTIK_HOST:-192.168.200.1}
+      - MIKROTIK_PORT=${MIKROTIK_PORT:-8728}
+      - MIKROTIK_USER=${MIKROTIK_USER:-laravel}
+      - MIKROTIK_PASS=${MIKROTIK_PASS:-Admin@2026}
+    volumes:
+      - storage:/var/www/html/storage
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mikrotik-scheduler
+    restart: unless-stopped
+    command: >
+      sh -c "while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=mikrotik_monitor
+      - DB_USERNAME=mikrotik
+      - DB_PASSWORD=secret_password
+      - MIKROTIK_HOST=${MIKROTIK_HOST:-192.168.200.1}
+      - MIKROTIK_PORT=${MIKROTIK_PORT:-8728}
+      - MIKROTIK_USER=${MIKROTIK_USER:-laravel}
+      - MIKROTIK_PASS=${MIKROTIK_PASS:-Admin@2026}
+    volumes:
+      - storage:/var/www/html/storage
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.0
+    container_name: mikrotik-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mikrotik_monitor
+      MYSQL_USER: mikrotik
+      MYSQL_PASSWORD: secret_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db_data:
+  storage:
