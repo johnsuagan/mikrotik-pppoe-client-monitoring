@@ -8,7 +8,6 @@ screenshots
 .env.backup
 .env.production
 docker-compose.yml
-docker
 tests
 .idea
 .vscode
